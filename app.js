@@ -52,7 +52,7 @@
 		if (!(fragments[1] in bookMap)) { return; }
 		if (fragments[2] > bookMap[fragments[1]].chapters) { return; }
 
-		get(apiUrl + bookMap[fragments[1]].name + ' ' + fragments[2], changePage);
+		get(apiUrl + bookMap[fragments[1]].name + ' ' + fragments[2] + '&callback=?', changePage);
 	}
 
 	function changePage(data) {
