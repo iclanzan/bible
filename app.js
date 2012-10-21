@@ -9,17 +9,13 @@
 		// var temp = localStorage.getItem(url);
 		// if (temp) { callback(cache[url] = temp); }
 
-		$.ajax({
-			url: url,
-			success: function(data) {
-				callback(cache[url] = JSON.parse(data));
-			},
-			timeout: 30000
+		$.get(url, function(data) {
+			callback(cache[url] = JSON.parse(data));
 		});
 	};
 }).call(this, jQuery);
 
-(function($) {
+(function($, get) {
 	'use strict';
 
 	var books = [
@@ -46,21 +42,17 @@
 		{name: 'Hebrews',         chapters:  13}, {name: 'James',           chapters:  5}, {name: '1 Peter',      chapters:  5},
 		{name: '2 Peter',         chapters:   3}, {name: '1 John',          chapters:  5}, {name: '2 John',       chapters:  1},
 		{name: '3 John',          chapters:   1}, {name: 'Jude',            chapters:  1}, {name: 'Revelation',   chapters: 22}
-	], bookMap,
-	apiUrl = 'http://labs.bible.org/?type=json&passage=',
+	], bookMap = {},
+	apiUrl = 'http://labs.bible.org/api/?type=json&passage=',
 	currentBook = '';
-
-	function get(apiUrl) {
-
-	}
 
 	function checkHash() {
 		var fragments = window.location.hash.match(/#!\/(.+)\/(\d+)$/);
 		if (!fragments) { return; }
-		if (!(fragments[0] in bookMap)) { return; }
-		if (fragments[1] > bookMap[fragments[0]].chapters) { return; }
+		if (!(fragments[1] in bookMap)) { return; }
+		if (fragments[2] > bookMap[fragments[1]].chapters) { return; }
 
-		get(apiUrl + bookMap[fragments[0]].name + ' ' + fragments[1], changePage);
+		get(apiUrl + bookMap[fragments[1]].name + ' ' + fragments[2], changePage);
 	}
 
 	function changePage(data) {
@@ -84,4 +76,5 @@
 	});
 
 	$(window).bind('hashchange', checkHash);
-}).call(this, jQuery, undefined);
+	$(window).trigger("hashchange");
+}).call(this, jQuery, get, undefined);
