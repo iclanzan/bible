@@ -71,9 +71,24 @@
 		$('#ui').html(text);
 	}
 
+	function renderPlaceholders() {
+		var i, html = '';
+		books.forEach(function(book) {
+			html += '<div id="' + book.slug + '" class="book"><ul>';
+			for (i = 1; i <= book.chapters; i++) {
+				html += '<li class="chapter"></li>';
+			}
+			html += '</ul></div>';
+		});
+		$('#ui').html(html);
+	}
+
 	books.forEach(function(book) {
-		bookMap[book.name.toLowerCase().replace(' ', '-')] = book;
+		book.slug = book.name.toLowerCase().replace(' ', '-');
+		bookMap[book.slug] = book;
 	});
+
+	renderPlaceholders();
 
 	$(window).bind('hashchange', checkHash);
 	$(window).trigger("hashchange");
