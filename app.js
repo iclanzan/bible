@@ -232,7 +232,7 @@ function gestures(element) {
 	lastViewScroll = 0,
 	lastSheetScroll = 0,
 	currentBook = '',
-	currentBookIndex,
+	currentBookIndex = 0,
 	currentChapter = 0,
 	renderedChapters = {};
 
